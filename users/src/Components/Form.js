@@ -1,28 +1,61 @@
 import React from 'react';
 
 const Form = props => {
-	const { values } = props;
+	const { values, submit, change, disabled, errors } = props;
 
-	const onChange = evt => {};
+	const onChange = evt => {
+		const { name, value, checked, type } = evt.target;
+		if (type === 'checkbox') {
+			change(name, checked);
+		} else {
+			change(name, value, checked);
+		}
+	};
+
+	const onSubmit = evt => {
+		evt.preventDefault();
+		submit();
+	};
 
 	return (
 		<div>
-			<form>
+			<div>
+				<div>{errors.first_name}</div>
+				<div>{errors.last_name}</div>
+				<div>{errors.email}</div>
+				<div>{errors.password}</div>
+				<div>{errors.serviceTerm}</div>
+			</div>
+
+			<form onSubmit={onSubmit}>
 				<label>
-					Name :{' '}
+					First Name :{' '}
 					<input
 						type='text'
 						placeholder='Enter Name'
-						name='name'
+						name='first_name'
 						onChange={onChange}
-						value={values.name}
+						value={values.first_name}
 					/>
 				</label>
 
 				<br />
 
 				<label>
-					Email :{' '}
+					Last Name :{' '}
+					<input
+						type='text'
+						placeholder='Enter Name'
+						name='last_name'
+						onChange={onChange}
+						value={values.last_name}
+					/>
+				</label>
+
+				<br />
+
+				<label>
+					Email :
 					<input
 						type='email'
 						placeholder='Enter Email'
@@ -48,10 +81,10 @@ const Form = props => {
 				<br />
 
 				<label>
-					Terms of Service{' '}
+					Terms of Service
 					<input
 						type='checkbox'
-						name='terms'
+						name='serviceTerm'
 						onChange={onChange}
 						checked={values.serviceTerm}
 					/>
@@ -59,7 +92,7 @@ const Form = props => {
 
 				<br />
 
-				<button>Add User</button>
+				<button disabled={disabled}>Add User</button>
 			</form>
 		</div>
 	);
